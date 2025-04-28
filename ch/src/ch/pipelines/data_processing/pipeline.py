@@ -1,46 +1,48 @@
 from kedro.pipeline import Pipeline, node, pipeline
-
-from .nodes import (
-    create_model_input_table,
-    load_shuttles_to_csv,
-    preprocess_companies,
-    preprocess_reviews,
-    preprocess_shuttles,
-)
+from .nodes import write_to_db
+from .nodes import *
+from kedro.io import DataCatalog
 
 
 def create_pipeline(**kwargs) -> Pipeline:
-    return pipeline(
+    return Pipeline(
         [
             node(
-                func=load_shuttles_to_csv,
-                inputs="shuttles_excel",
-                outputs="shuttles@csv",
-                name="load_shuttles_to_csv_node",
+                func=write_to_db,
+                inputs="patients",   
+                outputs="t_patients", 
+                name="write_patients_to_db",
             ),
             node(
-                func=preprocess_companies,
-                inputs="companies",
-                outputs="preprocessed_companies",
-                name="preprocess_companies_node",
+                func=write_to_db,
+                inputs="encounters",   
+                outputs="t_encounters", 
+                name="write_encounters_to_db",
             ),
             node(
-                func=preprocess_shuttles,
-                inputs="shuttles@spark",
-                outputs="preprocessed_shuttles",
-                name="preprocess_shuttles_node",
+                func=write_to_db,
+                inputs="symptoms",   
+                outputs="t_symptoms", 
+                name="write_symptoms_to_db",
             ),
             node(
-                func=preprocess_reviews,
-                inputs="reviews",
-                outputs="preprocessed_reviews",
-                name="preprocess_reviews_node",
+                func=write_to_db,
+                inputs="medications",   
+                outputs="t_medications", 
+                name="write_medications_to_db",
             ),
             node(
-                func=create_model_input_table,
-                inputs=["preprocessed_shuttles", "preprocessed_companies", "preprocessed_reviews"],
-                outputs="model_input_table@spark",
-                name="create_model_input_table_node",
+                func=write_to_db,
+                inputs="conditions",   
+                outputs="t_conditions", 
+                name="write_conditions_to_db",
             ),
+            node(
+                func=clean_patients_data,
+                inputs="catalog",   
+                outputs="t_patients_cleaned", 
+                name="clean_patients_data",
+            ),
+            
         ]
     )
