@@ -55,13 +55,3 @@ t_conditions:
   credentials: db_credentials
   save_args:
     if_exists: replace
-
-db_credentials:
-  type: kedro.extras.datasets.pandas.YAMLDataSet
-  filepath: conf/base/credentials.yml
-  data: 
-    user: "postgres"
-    password: "postgres"
-    host: "localhost"
-    port: 5432
-    database: "postgres"

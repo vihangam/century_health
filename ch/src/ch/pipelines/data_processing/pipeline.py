@@ -39,7 +39,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             ),
             node(
                 func=clean_patients_data,
-                inputs="catalog",   
+                inputs="t_patients",   
                 outputs="t_patients_cleaned", 
                 name="clean_patients_data",
             ),
