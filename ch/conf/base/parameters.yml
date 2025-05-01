@@ -1,0 +1,16 @@
+db_credentials:
+  user: "postgres"
+  password: "postgres"
+  host: "localhost"
+  port: 5432
+  database: "postgres"
+
+patients_dataset_name: patients
+
+encounters_dataset_name: encounters
+
+conditions_dataset_name: conditions
+
+symptoms_dataset_name: symptoms
+
+medications_dataset_name: medications

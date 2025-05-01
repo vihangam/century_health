@@ -24,34 +24,86 @@ conditions:
 t_patients:
   type: pandas.SQLTableDataset
   table_name: t_patients
-  credentials: db_credentials
+  credentials: postgres_conn
   save_args:
     if_exists: replace
 
 t_encounters:
   type: pandas.SQLTableDataset
   table_name: t_encounters
-  credentials: db_credentials
+  credentials: postgres_conn
   save_args:
     if_exists: replace
 
 t_symptoms:
   type: pandas.SQLTableDataset
   table_name: t_symptoms
-  credentials: db_credentials
+  credentials: postgres_conn
   save_args:
     if_exists: replace
 
 t_medications:
   type: pandas.SQLTableDataset
   table_name: t_medications
-  credentials: db_credentials
+  credentials: postgres_conn
   save_args:
     if_exists: replace
 
 t_conditions:
   type: pandas.SQLTableDataset
   table_name: t_conditions
-  credentials: db_credentials
+  credentials: postgres_conn
+  save_args:
+    if_exists: replace
+
+cleaned_patients:
+  type: pandas.ParquetDataset
+  filepath: data/02_intermediate/cleaned_patients.parquet
+  save_args:
+    index: false
+
+patient_gender:
+  filepath: data/01_raw/patient_gender.csv
+  type: pandas.CSVDataset
+
+
+symptoms_intermediate:
+  type: pandas.ParquetDataset
+  filepath: data/02_intermediate/symptoms_intermediate.parquet
+  save_args:
+    index: false
+
+t_symptoms_intermediate:
+  type: pandas.SQLTableDataset
+  table_name: t_symptoms_intermediate
+  credentials: postgres_conn
+  save_args:
+    if_exists: replace
+
+patients_and_symptoms_merged:
+  type: pandas.SQLTableDataset
+  table_name: t_patients_and_symptoms_merged
+  credentials: postgres_conn
+  save_args:
+    if_exists: replace
+
+patients_symptoms_encounters_merged:
+  type: pandas.SQLTableDataset
+  table_name: t_patients_symptoms_encounters_merged
+  credentials: postgres_conn
+  save_args:
+    if_exists: replace
+
+patients_symptoms_encounters_condtitions_merged:
+  type: pandas.SQLTableDataset
+  table_name: t_patients_symptoms_encounters_condtitions_merged
+  credentials: postgres_conn
+  save_args:
+    if_exists: replace
+
+t_master_table:
+  type: pandas.SQLTableDataset
+  table_name: t_master_table
+  credentials: postgres_conn
   save_args:
     if_exists: replace
