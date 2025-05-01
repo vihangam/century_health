@@ -70,12 +70,25 @@ def write_to_db(df: pd.DataFrame, dataset_name: str) -> pd.DataFrame:
        df = standardize_column_names(df, "patients")
     elif dataset_name == "encounters":
         df = standardize_column_names(df, "encounters")
+        df = encounter_id_to_upper(df)
     elif dataset_name == "conditions":
         df = standardize_column_names(df, "conditions")
+        df = encounter_id_to_upper(df)
     elif dataset_name == "symptoms":
         df = standardize_column_names(df, "symptoms")
     elif dataset_name == "medications":
         df = standardize_column_names(df, "medications")
+        df = encounter_id_to_upper(df)
+
+    df = patient_id_to_upper(df)
+    return df
+
+def patient_id_to_upper(df: pd.DataFrame)-> pd.DataFrame:
+    df["patient_id"] = df["patient_id"].str.upper()
+    return df
+
+def encounter_id_to_upper(df: pd.DataFrame)-> pd.DataFrame:
+    df["encounter_id"] = df["encounter_id"].str.upper()
     return df
 
 def clean_patients_data(patients: pd.DataFrame, patient_gender: pd.DataFrame) -> pd.DataFrame:
@@ -96,23 +109,9 @@ def clean_patients_data(patients: pd.DataFrame, patient_gender: pd.DataFrame) ->
         how="left"
     )
     patients = merged_df[merged_df["state"] == "Texas"].copy()
+    patients["patient_id"] = patients["patient_id"].str.upper()
 
     return patients
-
-# def clean_encounters(encounters: pd.DataFrame) -> pd.DataFrame:
-#     encounters = encounters.rename(columns={"PATIENT": "PATIENT_ID"})
-#     encounters = encounters.rename(columns={"Id": "ENCOUNTER_ID"})
-
-# def clean_conditions(conditions: pd.DataFrame) -> pd.DataFrame:
-#     conditions = conditions.rename(columns={"PATIENT": "PATIENT_ID"})
-#     conditions = conditions.rename(columns={"ENCOUNTER": "ENCOUNTER_ID"})
-
-# def clean_medications(medications: pd.DataFrame) -> pd.DataFrame:
-#     medications = medications.rename(columns={"PATIENT": "PATIENT_ID"})
-#     medications = medications.rename(columns={"ENCOUNTER": "ENCOUNTER_ID"})
-
-# def clean_symptoms(symptoms: pd.DataFrame) -> pd.DataFrame:
-#     symptoms = symptoms.rename(columns={"PATIENT": "PATIENT_ID"})
 
 def extract_symptoms_columns(df: pd.DataFrame) -> pd.DataFrame:
     # Split and map each symptom entry into a dict with lowercase keys
