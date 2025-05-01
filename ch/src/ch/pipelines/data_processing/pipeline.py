@@ -57,7 +57,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             ),
             node(
             func=merge_patients_and_symptoms,
-            inputs=["t_patients", "t_symptoms_intermediate"],
+            inputs=["cleaned_patients", "t_symptoms_intermediate"],
             outputs="patients_and_symptoms_merged",
             name="merge_patients_and_symptoms_node",
             ),
